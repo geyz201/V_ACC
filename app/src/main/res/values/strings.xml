@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Speed</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Velocity&amp;Acceleration Collector</string>
+    <string name="nav_header_subtitle">geyz19@mails.tsinghua.edu.cn</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_ZC">校准</string>
+    <string name="menu_slideshow">Slideshow</string>
+</resources>
