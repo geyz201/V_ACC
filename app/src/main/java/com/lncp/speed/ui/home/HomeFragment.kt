@@ -37,7 +37,7 @@ class HomeFragment : Fragment() {
             if (processState) {
                 val intent = Intent(requireContext(), SensorRecord::class.java)
                 intent.action = "com.lncp.server.SensorRecord"
-                stopService(intent)
+                requireActivity().stopService(intent)
                 //关闭蓝牙
                 //BluetoothService.cancel()
 
@@ -48,7 +48,7 @@ class HomeFragment : Fragment() {
 
                 val intent = Intent(requireContext(), SensorRecord::class.java)
                 intent.action = "com.lncp.server.SensorRecord"
-                startService(intent)
+                requireActivity().startService(intent)
 
                 Btn_measure.text = "停止"
             }

@@ -34,16 +34,6 @@ class SensorRecord : Service(), SensorEventListener {
     //private val sensorData_Acc = ArrayList<Vec3D>()
     //private val sensorData_GRV = ArrayList<Vec3D>()
 
-    val currentAcc: MutableLiveData<Vec3D> by lazy {
-        MutableLiveData<Vec3D>()
-    }
-    val currentGRV: MutableLiveData<Vec3D> by lazy {
-        MutableLiveData<Vec3D>()
-    }
-    val currentSpeed: MutableLiveData<Vec3D> by lazy {
-        MutableLiveData<Vec3D>()
-    }
-
     inner class LocalBinder : Binder() {
         // Return this instance of LocalService so clients can call public methods
         fun getService(): SensorRecord = this@SensorRecord
@@ -122,12 +112,10 @@ class SensorRecord : Service(), SensorEventListener {
             Sensor.TYPE_LINEAR_ACCELERATION -> {
                 //Data Receive from sensor
                 val tmpVec = Vec3D(event.values)
-                currentAcc.value = tmpVec
                 SpeedCaculator.Acc_Update(event.timestamp, tmpVec - Acc0)
             }
             Sensor.TYPE_GAME_ROTATION_VECTOR -> {
                 val tmpVec = Vec3D(event.values)
-                currentGRV.value = tmpVec
                 SpeedCaculator.GRV_Update(event.timestamp, tmpVec)
             }
         }
