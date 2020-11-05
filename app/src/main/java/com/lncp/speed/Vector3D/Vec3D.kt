@@ -62,7 +62,8 @@ data class Vec3D(var x: Double, var y: Double, var z: Double) : VecTor {
     val magnitude get() = sqrt(x * x + y * y + z * z)
     override val size get() = 3   //VecTor接口需要
 
-    fun YXrotate(theta: Double) = Vec3D(x * cos(theta) + y * sin(theta), y * cos(theta) - x * sin(theta), z)
+    fun YXrotate(theta: Double) =
+        Vec3D(x * cos(theta) + y * sin(theta), y * cos(theta) - x * sin(theta), z)
 }
 
-data class Vec3D_t(val v: Vec3D, val time: Long)
+data class pvat(val position: Vec3D, val velocity: Float, val acceleraition: Vec3D, val time: Long)

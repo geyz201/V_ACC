@@ -17,13 +17,9 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.jetbrains.anko.toast
-import threeDvector.Rotate
-import threeDvector.Slerp
-import threeDvector.Vec3D
-import threeDvector.Vec3D_t
+import threeDvector.*
 import java.util.*
 import kotlin.concurrent.timerTask
-
 
 class SensorRecord : Service(), SensorEventListener {
     private val binder = LocalBinder()
@@ -34,8 +30,9 @@ class SensorRecord : Service(), SensorEventListener {
 
     private var Acc0 = Vec3D()
 
-    //private val sensorData_Acc = ArrayList<Vec3D>()
-    //private val sensorData_GRV = ArrayList<Vec3D>()
+
+    private val sensorData = ArrayList<pvat>()
+
     inner class LocalBinder : Binder() {
         // Return this instance of LocalService so clients can call public methods
         fun getService(): SensorRecord = this@SensorRecord
@@ -104,10 +101,9 @@ class SensorRecord : Service(), SensorEventListener {
                 location.altitude.toFloat(),
                 location.time
             ).declination
-            val Accnow = SpeedCalculator.Acc_Clear().YXrotate(theta.toDouble())
-            val v = location.speed
-            val position = Vec3D(location.latitude,location.longitude,location.altitude)
-            val t=location.time
+            val Acc = SpeedCalculator.Acc_Clear().YXrotate(theta.toDouble())
+            val position = Vec3D(location.latitude, location.longitude, location.altitude)
+            sensorData.add(pvat(position, location.speed, Acc, location.time))
         }
 
         override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
