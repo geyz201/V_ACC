@@ -14,6 +14,7 @@ import com.lncp.speed.FileSave
 import com.lncp.speed.serialize
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import threeDvector.Vec3D
 
 class ZCViewModel : ViewModel() {
@@ -23,7 +24,7 @@ class ZCViewModel : ViewModel() {
     private lateinit var sensorManager:SensorManager
     lateinit var app:Activity
 
-    fun ZeroCalibration(){
+    fun ZeroCalibration()= runBlocking{
         viewModelScope.launch {
             delay(10000L)
             sensorManager.unregisterListener(AccRecorder)

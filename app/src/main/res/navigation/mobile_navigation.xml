@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/nav_ZC"
-        android:name="com.lncp.speed.ui.ZC.GalleryFragment"
+        android:name="com.lncp.speed.ui.ZC.ZCFragment"
         android:label="@string/menu_ZC"
         tools:layout="@layout/fragment_zc" />
 
