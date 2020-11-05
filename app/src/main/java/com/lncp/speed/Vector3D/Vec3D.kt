@@ -1,13 +1,25 @@
 package threeDvector
 
 import java.lang.IllegalArgumentException
+import kotlin.math.cos
+import kotlin.math.sin
 import kotlin.math.sqrt
 
 
 data class Vec3D(var x: Double, var y: Double, var z: Double) : VecTor {
     constructor() : this(0.0, 0.0, 0.0)
-    constructor(coord: Array<Number>) : this(coord[0].toDouble(), coord[1].toDouble(), coord[2].toDouble())
-    constructor(coord: FloatArray) : this(coord[0].toDouble(), coord[1].toDouble(), coord[2].toDouble())
+    constructor(coord: Array<Number>) : this(
+        coord[0].toDouble(),
+        coord[1].toDouble(),
+        coord[2].toDouble()
+    )
+
+    constructor(coord: FloatArray) : this(
+        coord[0].toDouble(),
+        coord[1].toDouble(),
+        coord[2].toDouble()
+    )
+
     constructor(coord: DoubleArray) : this(coord[0], coord[1], coord[2])
     constructor(x: Number, y: Number, z: Number) : this(x.toDouble(), y.toDouble(), z.toDouble())
 
@@ -34,7 +46,8 @@ data class Vec3D(var x: Double, var y: Double, var z: Double) : VecTor {
     operator fun set(index: Int, value: Number): Unit = set(index, value.toDouble())
 
     //cross product
-    operator fun times(other: Vec3D) = Vec3D(y * other.z - z * other.y, z * other.x - x * other.z, x * other.y - y * other.x)
+    operator fun times(other: Vec3D) =
+        Vec3D(y * other.z - z * other.y, z * other.x - x * other.z, x * other.y - y * other.x)
 
     operator fun times(other: Double) = Vec3D(x * other, y * other, z * other)
     operator fun times(other: Number) = this.times(other.toDouble())
@@ -48,6 +61,8 @@ data class Vec3D(var x: Double, var y: Double, var z: Double) : VecTor {
 
     val magnitude get() = sqrt(x * x + y * y + z * z)
     override val size get() = 3   //VecTor接口需要
+
+    fun YXrotate(theta: Double) = Vec3D(x * cos(theta) + y * sin(theta), y * cos(theta) - x * sin(theta), z)
 }
 
-data class Vec3D_t(val v:Vec3D, val time:Long)
+data class Vec3D_t(val v: Vec3D, val time: Long)
