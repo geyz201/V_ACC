@@ -19,6 +19,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service android:name=".SensorRecord">
+            <intent-filter>
+                <action android:name="com.lncp.server.SensorRecord" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
