@@ -14,28 +14,26 @@ import threeDvector.Vec3D
 
 class ZCFragment : Fragment() {
 
-    private lateinit var ZCViewModel: ZCViewModel
+    private val model: ZCViewModel by viewModels()
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        ZCViewModel =
-                ViewModelProviders.of(this).get(ZCViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_zc, container, false)
         text_zc.visibility=View.INVISIBLE
-        ZCViewModel.app=requireActivity()
-        ZCViewModel.Ending.observe(viewLifecycleOwner,Observer<Boolean>{
+        model.app=requireActivity()
+        model.Ending.observe(viewLifecycleOwner,Observer<Boolean>{
             if(it){
                 text_zc.visibility=View.INVISIBLE
                 Btn_zc.visibility=View.VISIBLE
             }
         })
         Btn_zc.setOnClickListener{
-            text_zc.visibility=View.VISIBLE
             Btn_zc.visibility=View.INVISIBLE
-            ZCViewModel.ZeroCalibration()
+            text_zc.visibility=View.VISIBLE
+            model.ZeroCalibration()
         }
         return root
     }
