@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.Observer
 import com.lncp.speed.R
 import kotlinx.android.synthetic.main.fragment_zc.*
@@ -23,7 +24,6 @@ class ZCFragment : Fragment() {
     ): View? {
         val root = inflater.inflate(R.layout.fragment_zc, container, false)
 
-        model.app = requireActivity()
         model.Ending.observe(viewLifecycleOwner, Observer<Boolean> {
             if (it) {
                 text_zc.visibility = View.INVISIBLE

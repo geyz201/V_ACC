@@ -1,15 +1,13 @@
 package com.lncp.speed.ui.ZC
 
 import android.app.Activity
+import android.app.Application
 import android.content.Context
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.lncp.speed.FileSave
 import com.lncp.speed.serialize
 import kotlinx.coroutines.delay
@@ -17,12 +15,12 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import threeDvector.Vec3D
 
-class ZCViewModel : ViewModel() {
+class ZCViewModel(application: Application) : AndroidViewModel(application) {
     private var sum = Vec3D()
     private var count = 0
     val Ending: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>(false) }
     private lateinit var sensorManager:SensorManager
-    lateinit var app:Activity
+    //lateinit var app:Activity
 
     fun ZeroCalibration()= runBlocking{
         viewModelScope.launch {
@@ -30,7 +28,7 @@ class ZCViewModel : ViewModel() {
             sensorManager.unregisterListener(AccRecorder)
 
             val ans = sum * (1.0 / count)
-            app.applicationContext.FileSave(fileContent = serialize(ans), filename = "Avg.JSON")
+            getApplication<Application>().FileSave(fileContent = serialize(ans), filename = "Avg.JSON")
             sum= Vec3D()
             count=0
 
@@ -44,7 +42,7 @@ class ZCViewModel : ViewModel() {
     }
 
     private fun Startlistener(){
-        sensorManager = app.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        sensorManager = getApplication<Application>().getSystemService(Context.SENSOR_SERVICE) as SensorManager
         val sensorAcc = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION)
         sensorManager.registerListener(AccRecorder, sensorAcc, SensorManager.SENSOR_DELAY_NORMAL)
     }
