@@ -104,6 +104,7 @@ class SensorRecord : Service(), SensorEventListener {
             val Acc = SpeedCalculator.Acc_Clear().YXrotate(theta.toDouble())
             val position = Vec3D(location.latitude, location.longitude, location.altitude)
             sensorData.add(pvat(position, location.speed, Acc, location.time))
+            applicationContext.FileSave(serialize(theta), filename = "theta.JSON")
         }
 
         override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
@@ -114,7 +115,7 @@ class SensorRecord : Service(), SensorEventListener {
         super.onCreate()
         sensorManager = applicationContext.getSystemService(Context.SENSOR_SERVICE) as SensorManager
         val sensorAcc = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION)
-        val sensorGRV = sensorManager.getDefaultSensor(Sensor.TYPE_GAME_ROTATION_VECTOR)
+        val sensorGRV = sensorManager.getDefaultSensor(Sensor.TYPE_GEOMAGNETIC_ROTATION_VECTOR)
         sensorManager.registerListener(this, sensorAcc, SensorManager.SENSOR_DELAY_NORMAL)
         sensorManager.registerListener(this, sensorGRV, SensorManager.SENSOR_DELAY_NORMAL)
 
@@ -166,7 +167,7 @@ class SensorRecord : Service(), SensorEventListener {
                 val tmpVec = Vec3D(event.values)
                 SpeedCalculator.Acc_Update(event.timestamp, tmpVec - Acc0)
             }
-            Sensor.TYPE_GAME_ROTATION_VECTOR -> {
+            Sensor.TYPE_GEOMAGNETIC_ROTATION_VECTOR -> {
                 val tmpVec = Vec3D(event.values)
                 SpeedCalculator.GRV_Update(event.timestamp, tmpVec)
             }
@@ -178,5 +179,7 @@ class SensorRecord : Service(), SensorEventListener {
         sensorManager.unregisterListener(this)
         locationManager.removeUpdates(locationListener)
         m_wkik.release()
+
+        applicationContext.FileSave(serialize(sensorData), filename = "SensorRecord.JSON")
     }
 }

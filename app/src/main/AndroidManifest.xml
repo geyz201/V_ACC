@@ -26,7 +26,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".SensorRecord">
+        <service android:name=".SensorRecord" android:process=":remote">
             <intent-filter>
                 <action android:name="com.lncp.server.SensorRecord" />
             </intent-filter>

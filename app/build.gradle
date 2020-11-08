@@ -16,6 +16,13 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    android.applicationVariants.all{
+        variant->
+            variant.outputs.all{
+                outputFileName='V_ACC.apk'
+            }
+    }
+
     buildTypes {
         release {
             minifyEnabled false

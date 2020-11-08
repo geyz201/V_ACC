@@ -66,4 +66,4 @@ data class Vec3D(var x: Double, var y: Double, var z: Double) : VecTor {
         Vec3D(x * cos(theta) + y * sin(theta), y * cos(theta) - x * sin(theta), z)
 }
 
-data class pvat(val position: Vec3D, val velocity: Float, val acceleraition: Vec3D, val time: Long)
+data class pvat(val position: Vec3D, val velocity: Float, val acceleration: Vec3D, val time: Long)
