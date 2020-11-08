@@ -20,6 +20,7 @@ import org.jetbrains.anko.toast
 import threeDvector.*
 import java.util.*
 import kotlin.concurrent.timerTask
+import kotlin.math.PI
 
 class SensorRecord : Service(), SensorEventListener {
     private val binder = LocalBinder()
@@ -101,10 +102,10 @@ class SensorRecord : Service(), SensorEventListener {
                 location.altitude.toFloat(),
                 location.time
             ).declination
-            val Acc = SpeedCalculator.Acc_Clear().YXrotate(theta.toDouble())
+            val Acc = SpeedCalculator.Acc_Clear().YXrotate(theta * PI / 180)
             val position = Vec3D(location.latitude, location.longitude, location.altitude)
             sensorData.add(pvat(position, location.speed, Acc, location.time))
-            applicationContext.FileSave(serialize(theta), filename = "theta.JSON")
+            //applicationContext.FileSave(serialize(theta), filename = "theta.JSON")
         }
 
         override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
