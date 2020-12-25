@@ -179,8 +179,9 @@ class SensorRecord : Service(), SensorEventListener {
         super.onDestroy()
         sensorManager.unregisterListener(this)
         locationManager.removeUpdates(locationListener)
+
         m_wkik.release()
 
-        applicationContext.FileSave(serialize(sensorData), filename = "SensorRecord.JSON")
+        applicationContext.FileSave(sensorData, filename = "SensorRecord.pdat")
     }
 }

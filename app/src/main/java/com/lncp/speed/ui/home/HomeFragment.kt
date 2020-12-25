@@ -14,7 +14,10 @@ import androidx.fragment.app.viewModels
 import com.lncp.speed.R
 import com.lncp.speed.SensorRecord
 import com.lncp.speed.ServiceCheckUtil
+import com.lncp.speed.UploadFile
 import kotlinx.android.synthetic.main.fragment_home.*
+import org.jetbrains.anko.support.v4.toast
+import org.jetbrains.anko.toast
 
 class HomeFragment : Fragment() {
 
@@ -38,6 +41,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Btn_measure.text = if (processState) "停止" else "开始采集数据"
+        Btn_upload.setOnClickListener { toast(requireContext().UploadFile("http://10.57.1.185:8080/upload",filename = "SensorRecord.pdat")) }
         Btn_measure.setOnClickListener {
             if (processState) {
                 val intent = Intent(requireContext(), SensorRecord::class.java)
