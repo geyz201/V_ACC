@@ -127,6 +127,7 @@ fun Context.UploadFile(uploadUrl: String?, filepath: String? = null, filename: S
             "Content-Type",
             "multipart/form-data;boundary=$uuid"
         )
+        //conn.setChunkedStreamingMode(1024 * 50)
         val bos = DataOutputStream(conn.outputStream)
         bos.writeBytes(Hyphens + uuid + end)
         bos.writeBytes(
@@ -156,7 +157,7 @@ fun Context.UploadFile(uploadUrl: String?, filepath: String? = null, filename: S
         }
         bos.close()
         conn.disconnect()
-        "SUCCESS"
+        "上传成功"
     } catch (e: Exception) {
         e.printStackTrace()
         "上传失败:" + e.message

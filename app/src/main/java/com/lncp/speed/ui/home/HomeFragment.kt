@@ -11,11 +11,17 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.LifecycleCoroutineScope
+import androidx.lifecycle.lifecycleScope
 import com.lncp.speed.R
 import com.lncp.speed.SensorRecord
 import com.lncp.speed.ServiceCheckUtil
 import com.lncp.speed.UploadFile
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import org.jetbrains.anko.custom.async
 import org.jetbrains.anko.support.v4.toast
 import org.jetbrains.anko.toast
 
@@ -41,7 +47,17 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Btn_measure.text = if (processState) "停止" else "开始采集数据"
-        Btn_upload.setOnClickListener { toast(requireContext().UploadFile("http://10.57.1.185:8080/upload",filename = "SensorRecord.pdat")) }
+        Btn_upload.setOnClickListener {
+            lifecycleScope.launch {
+                val uploadResult = async(Dispatchers.IO) {
+                    requireContext().UploadFile(
+                        "http://10.57.1.185:8080/upload",
+                        filename = "SensorRecord.pdat"
+                    )
+                }
+                toast(uploadResult.await())
+            }
+        }
         Btn_measure.setOnClickListener {
             if (processState) {
                 val intent = Intent(requireContext(), SensorRecord::class.java)
@@ -56,17 +72,29 @@ class HomeFragment : Fragment() {
                 //getPairedDevices()
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    if (checkSelfPermission(requireContext(),Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    if (checkSelfPermission(
+                            requireContext(),
+                            Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) {
                         //requestPermissions是异步执行的
                         requestPermissions(
                             arrayOf(Manifest.permission.ACCESS_BACKGROUND_LOCATION),
                             LOCATION_PERMISSION
                         )
-                        while (checkSelfPermission(requireContext(),Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        while (checkSelfPermission(
+                                requireContext(),
+                                Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                            ) != PackageManager.PERMISSION_GRANTED
+                        ) {
                         }
                     }
                 } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (checkSelfPermission(requireContext(),Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    if (checkSelfPermission(
+                            requireContext(),
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) {
                         //requestPermissions是异步执行的
                         requestPermissions(
                             arrayOf(
@@ -75,7 +103,11 @@ class HomeFragment : Fragment() {
                             ),
                             LOCATION_PERMISSION
                         )
-                        while (checkSelfPermission(requireContext(),Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        while (checkSelfPermission(
+                                requireContext(),
+                                Manifest.permission.ACCESS_FINE_LOCATION
+                            ) != PackageManager.PERMISSION_GRANTED
+                        ) {
                         }
                     }
                 }
